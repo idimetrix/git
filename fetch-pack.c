@@ -1347,7 +1347,6 @@ static void write_command_and_capabilities(struct strbuf *req_buf,
 	packet_buf_delim(req_buf);
 }
 
-
 void send_object_info_request(int fd_out, struct object_info_args *args)
 {
 	struct strbuf req_buf = STRBUF_INIT;
@@ -1705,6 +1704,9 @@ static struct ref *do_fetch_pack_v2(struct fetch_pack_args *args,
 	use_sideband = 2;
 	if (args->depth > 0 || args->deepen_since || args->deepen_not)
 		args->deepen = 1;
+
+	if (args->object_info)
+		state = FETCH_SEND_REQUEST;
 
 	while (state != FETCH_DONE) {
 		switch (state) {
